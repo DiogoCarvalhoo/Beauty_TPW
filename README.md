@@ -1,4 +1,4 @@
-# Projeto: BeautyCare - Backend and Frontend Development
+# Projeto TPW: BeautyCare - Backend and Frontend Development
 
 ====
 
