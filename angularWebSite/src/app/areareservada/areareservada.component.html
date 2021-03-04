@@ -1,0 +1,175 @@
+<nav class="navbar navbar-expand-lg navbar-light " style="background: whitesmoke">
+  <a routerLink="/home"><img style="height: 80px; width: 133px; margin-right: 20px" src="http://localhost:8000/static/images/logo2.png"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/listaInstitutos" style="width: 133px; height: 80px; padding-top: 30px">Institutos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/listaServicos" style="width: 133px; height: 80px; padding-top: 30px">Serviços</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/listaProdutos" style="width: 133px; height: 80px; padding-top: 30px">Produtos</a>
+      </li>
+      <div *ngIf="userLogado; then thenBlock1"></div>
+      <ng-template #thenBlock1>
+        <li class="nav-item">
+          <div class="dropdown show">
+            <a style="width: 133px; height: 80px; padding-top: 30px" class="nav-link" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Gestão
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <a class="dropdown-item" routerLink="/geririnstitutos">Seus Institutos</a>
+              <a class="dropdown-item" routerLink="/gerirprodutos">Seus Produtos</a>
+              <a class="dropdown-item" routerLink="/gerirservicos">Seus Serviços</a>
+              <a class="dropdown-item" routerLink="/gerirstaff">Seu Staff</a>
+            </div>
+          </div>
+        </li>
+      </ng-template>
+      <div *ngIf="userName == 'projeto'; then thenBlock3"></div>
+      <ng-template #thenBlock3>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/areareservada" style="width: 150px; height: 80px; padding-top: 30px">Área Reservada</a>
+        </li>
+      </ng-template>
+    </ul>
+    <div *ngIf="userLogado; then thenBlock2 else elseBlock2"></div>
+    <ng-template #thenBlock2>
+      <ul class="nav navbar-nav navbar-right" >
+        <li style="text-align: right;"><a routerLink="/account">
+          <img src="http://localhost:8000/static/images/user.png" style="width: 5%">
+          <span class="glyphicon glyphicon-log-in">&nbsp;</span>
+          {{ userName }}
+          <span class="glyphicon glyphicon-log-in">&nbsp; &nbsp;</span>
+        </a></li>
+        <li style="text-align: right; margin-top: 0.25%"><a (click)="logout()" >
+          <span class="glyphicon glyphicon-log-in"></span>
+          Logout
+        </a></li>
+      </ul>
+    </ng-template>
+    <ng-template #elseBlock2>
+      <ul  class="nav navbar-nav navbar-right">
+        <li style="margin-right: 25px"><a routerLink="/login">Login</a></li>
+        <li><a routerLink="/registar">Criar conta</a></li>
+      </ul>
+    </ng-template>
+  </div>
+</nav>
+
+<div style="max-width: 70%; margin: auto">
+  <h1>Área Reservada Gestão Categorias</h1>
+  <hr>
+  <h2 style="margin-bottom: 30px">Categorias Serviços: </h2>
+  <ul style="width: 80%; margin: auto" class="list-group list-group-flush">
+    <li *ngFor="let categoria of categoriasServicos" class="list-group-item" style="margin-bottom: 20px">
+      <div class="row">
+        <img style="height: 30px; margin-left: 40px; margin-right: 80px" src="http://localhost:8000{{ categoria.foto }}">
+        <div class="col-md-3 col-xs-6 divTableCell">
+          <p style="font-size: 16px" >{{ categoria.nome }}</p>
+        </div>
+        <img src="http://localhost:8000/static/images/deleteicon.png" style="width: 25px; margin-left: 30px; position: absolute; right: 50px;" (click)='remover(categoria)' >
+      </div>
+    </li>
+    <li  class="list-group-item" style="margin-left : 10%; margin-bottom: 20px; width: 80%">
+      <div class="row" style="margin: auto">
+        <!--
+        <form action="/inserirCategoriaServico/" method="post"  enctype="multipart/form-data" style="width: 90%">
+          {% csrf_token %}
+          <div style="float:left; margin-left: 10%">
+            {{ formServicos.foto }}
+            <div class="col-md-12" style="margin: 15px auto; width: 90%">
+              {{ formServicos.nome }}
+            </div>
+          </div>
+          <div>
+            <button style="width: 150px; margin-left: 30px; margin-top: 3%" class="btn btn-success" type="submit">Inserir</button>
+          </div>
+        </form>
+        -->
+
+
+
+        <div *ngIf="formReady1" class="form-group" style="margin-top: 20px">
+          <form class="login-form" [formGroup]="formGroup1" (ngSubmit)="inserir1()">
+            <div style="float:left; margin-left: 10%;" >
+              <label>
+                Foto:
+              </label>
+              <input  type="file" (change)="onSelectedFile1($event)">
+              <div class="col-md-12" style="margin: 15px auto; width: 90%">
+                <label>
+                  Nome:
+                </label>
+                <input class="form-control" formControlName="nome">
+              </div>
+            </div>
+            <button style="width: 150px; margin-left: 30px; margin-top: 3%" class="btn btn-success" type="submit">Inserir</button>
+          </form>
+        </div>
+
+      </div>
+
+
+    </li>
+  </ul>
+  <hr>
+  <h2 style="margin-bottom: 30px">Categorias Produtos: </h2>
+  <ul style="width: 80%; margin: auto" class="list-group list-group-flush">
+    <li *ngFor="let categoria of categoriasProdutos" class="list-group-item" style="margin-bottom: 20px">
+      <div class="row">
+        <img style="height: 30px; margin-left: 40px; margin-right: 80px" src="http://localhost:8000{{ categoria.foto }}">
+        <div class="col-md-3 col-xs-6 divTableCell">
+          <p style="font-size: 16px" >{{ categoria.nome }}</p>
+        </div>
+        <img src="http://localhost:8000/static/images/deleteicon.png" style="width: 25px; margin-left: 30px; position: absolute; right: 50px;" (click)='remover2(categoria)'>
+      </div>
+    </li>
+
+    <li  class="list-group-item" style="margin-left : 10%; margin-bottom: 20px; width: 80%">
+      <div class="row" style="margin: auto">
+        <!--
+        <form action="/inserirCategoriaProduto/" method="post"  enctype="multipart/form-data" style="width: 90%">
+          {% csrf_token %}
+          <div style="float:left; margin-left: 10%">
+            {{ formProdutos.foto }}
+            <div class="col-md-12" style="margin: 15px auto; width: 90%">
+              {{ formProdutos.nome }}
+            </div>
+          </div>
+          <div>
+            <button style="width: 150px; margin-left: 30px; margin-top: 3%" class="btn btn-success" type="submit">Inserir</button>
+          </div>
+        </form>
+        -->
+
+
+
+        <div *ngIf="formReady2" class="form-group" style="margin-top: 20px">
+          <form class="login-form" [formGroup]="formGroup2" (ngSubmit)="inserir2()">
+            <div style="float:left; margin-left: 10%">
+              <label>
+                Foto:
+              </label>
+              <input  type="file" (change)="onSelectedFile2($event)">
+              <div class="col-md-12" style="margin: 15px auto; width: 90%">
+                <label>
+                  Nome:
+                </label>
+                <input class="form-control" formControlName="nome">
+              </div>
+            </div>
+            <button style="width: 150px; margin-left: 30px; margin-top: 3%" class="btn btn-success" type="submit">Inserir</button>
+          </form>
+        </div>
+
+      </div>
+    </li>
+  </ul>
+</div>

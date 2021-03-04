@@ -1,0 +1,145 @@
+<nav class="navbar navbar-expand-lg navbar-light " style="background: whitesmoke">
+  <a routerLink="/home"><img style="height: 80px; width: 133px; margin-right: 20px" src="http://localhost:8000/static/images/logo2.png"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/listaInstitutos" style="width: 133px; height: 80px; padding-top: 30px">Institutos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/listaServicos" style="width: 133px; height: 80px; padding-top: 30px">Serviços</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/listaProdutos" style="width: 133px; height: 80px; padding-top: 30px">Produtos</a>
+      </li>
+      <div *ngIf="userLogado; then thenBlock1"></div>
+      <ng-template #thenBlock1>
+        <li class="nav-item">
+          <div class="dropdown show">
+            <a style="width: 133px; height: 80px; padding-top: 30px" class="nav-link" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Gestão
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <a class="dropdown-item" routerLink="/geririnstitutos">Seus Institutos</a>
+              <a class="dropdown-item" routerLink="/gerirprodutos">Seus Produtos</a>
+              <a class="dropdown-item" routerLink="/gerirservicos">Seus Serviços</a>
+              <a class="dropdown-item" routerLink="/gerirstaff">Seu Staff</a>
+            </div>
+          </div>
+        </li>
+      </ng-template>
+      <div *ngIf="userName == 'projeto'; then thenBlock3"></div>
+      <ng-template #thenBlock3>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/areareservada" style="width: 150px; height: 80px; padding-top: 30px">Área Reservada</a>
+        </li>
+      </ng-template>
+    </ul>
+    <div *ngIf="userLogado; then thenBlock2 else elseBlock2"></div>
+    <ng-template #thenBlock2>
+      <ul class="nav navbar-nav navbar-right" >
+        <li style="text-align: right;"><a routerLink="/account">
+          <img src="http://localhost:8000/static/images/user.png" style="width: 5%">
+          <span class="glyphicon glyphicon-log-in">&nbsp;</span>
+          {{ userName }}
+          <span class="glyphicon glyphicon-log-in">&nbsp; &nbsp;</span>
+        </a></li>
+        <li style="text-align: right; margin-top: 0.25%"><a (click)="logout()" >
+          <span class="glyphicon glyphicon-log-in"></span>
+          Logout
+        </a></li>
+      </ul>
+    </ng-template>
+    <ng-template #elseBlock2>
+      <ul  class="nav navbar-nav navbar-right">
+        <li style="margin-right: 25px"><a routerLink="/login">Login</a></li>
+        <li><a routerLink="/registar">Criar conta</a></li>
+      </ul>
+    </ng-template>
+  </div>
+</nav>
+
+
+<div class="container-lg my-3">
+  <div id="myCarousel" class="carousel slide" data-interval="3000" data-ride="carousel" style="width: 90%; margin: 20px auto;">
+    <!-- Carousel indicators -->
+    <ol class="carousel-indicators">
+      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+      <li data-target="#myCarousel" data-slide-to="1"></li>
+      <li data-target="#myCarousel" data-slide-to="2"></li>
+    </ol>
+    <!-- Wrapper for carousel items -->
+    <div class="carousel-inner">
+      <div class="zoom carousel-item active">
+        <img src="http://localhost:8000/static/images/index/services.jpg" alt="First Slide" style="width: 100%; height: 600px" [routerLink]= "['/servico', 8]">
+        <div class="text-item carousel-caption d-none d-md-block">
+          <h5 [routerLink]= "['/servico', 8]">Massagem</h5>
+          <p [routerLink]= "['/servico', 8]">Massagem feita em marquesa com óleos, som ambiente à luz das velas para que tu possas desfrutar de um momento de relaxamento só teu.</p>
+        </div>
+      </div>
+      <div class="zoom carousel-item">
+        <img src="http://localhost:8000/static/images/index/institutes.jpg" alt="Second Slide" style="width: 100%; height: 600px" [routerLink]= "['/instituto', 5]">
+        <div class="text-item carousel-caption d-none d-md-block">
+          <h5 [routerLink]= "['/instituto', 5]">Z Vegan Hair</h5>
+          <p [routerLink]= "['/instituto', 5]">Vegan, sem testes em animais, orgânico e livre de parabenos e sulfatos.</p>
+        </div>
+      </div>
+      <div class="zoom carousel-item">
+        <img src="http://localhost:8000/static/images/index/products.jpg" alt="Third Slide" style="width: 100%; height: 600px" [routerLink]= "['/produto', 14]">
+        <div class="text-item carousel-caption d-none d-md-block">
+          <h5 [routerLink]= "['/produto', 14]">Kit Cremes Corporais</h5>
+          <p [routerLink]= "['/produto', 14]">O kit de cremes foi desenvolvido para dar fortalecimento e mais resistência à sua pele. Ideal para pessoas com pele seca.</p>
+        </div>
+      </div>
+    </div>
+    <!-- Carousel controls -->
+    <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </a>
+    <a class="carousel-control-next" href="#myCarousel" data-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </a>
+  </div>
+</div>
+
+<section>
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6 order-lg-2">
+        <div class="zoom p-5">
+          <img class="img-fluid rounded-circle" src="http://localhost:8000/static/images/index/qualidade.jpg" alt="home-page-service" [routerLink]= "['/servico', 9]" >
+        </div>
+      </div>
+      <div class="col-lg-6 order-lg-1">
+        <div class="p-5">
+          <h2 class="display-4">Qualidade</h2>
+          <p>Venha conhecer as ofertas dos melhores serviços de beleza com que os nossos parceiros estão a brindar os seus clientes ...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section>
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <div class="zoom p-5">
+          <img class="img-fluid rounded-circle" src="http://localhost:8000/static/images/index/quantidade.jpg" alt="home-page-product" [routerLink]= "['/produto', 15]">
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="p-5">
+          <h2 class="display-4">Quantidade</h2>
+          <p>... Aproveite e conheça a vasta gama de produtos vendidos pelos nossos parceiros. Prometem-lhe uma melhor qualidade no seu dia-a-dia.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div style="margin-bottom: 100px;">

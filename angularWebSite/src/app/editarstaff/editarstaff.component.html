@@ -1,0 +1,153 @@
+<nav class="navbar navbar-expand-lg navbar-light " style="background: whitesmoke">
+  <a routerLink="/home"><img style="height: 80px; width: 133px; margin-right: 20px" src="http://localhost:8000/static/images/logo2.png"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/listaInstitutos" style="width: 133px; height: 80px; padding-top: 30px">Institutos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/listaServicos" style="width: 133px; height: 80px; padding-top: 30px">Serviços</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/listaProdutos" style="width: 133px; height: 80px; padding-top: 30px">Produtos</a>
+      </li>
+      <div *ngIf="userLogado; then thenBlock1"></div>
+      <ng-template #thenBlock1>
+        <li class="nav-item">
+          <div class="dropdown show">
+            <a style="width: 133px; height: 80px; padding-top: 30px" class="nav-link" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Gestão
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <a class="dropdown-item" routerLink="/geririnstitutos">Seus Institutos</a>
+              <a class="dropdown-item" routerLink="/gerirprodutos">Seus Produtos</a>
+              <a class="dropdown-item" routerLink="/gerirservicos">Seus Serviços</a>
+              <a class="dropdown-item" routerLink="/gerirstaff">Seu Staff</a>
+            </div>
+          </div>
+        </li>
+      </ng-template>
+      <div *ngIf="userName == 'projeto'; then thenBlock3"></div>
+      <ng-template #thenBlock3>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/areareservada" style="width: 150px; height: 80px; padding-top: 30px">Área Reservada</a>
+        </li>
+      </ng-template>
+    </ul>
+    <div *ngIf="userLogado; then thenBlock2 else elseBlock2"></div>
+    <ng-template #thenBlock2>
+      <ul class="nav navbar-nav navbar-right" >
+        <li style="text-align: right;"><a routerLink="/account">
+          <img src="http://localhost:8000/static/images/user.png" style="width: 5%">
+          <span class="glyphicon glyphicon-log-in">&nbsp;</span>
+          {{ userName }}
+          <span class="glyphicon glyphicon-log-in">&nbsp; &nbsp;</span>
+        </a></li>
+        <li style="text-align: right; margin-top: 0.25%"><a (click)="logout()" >
+          <span class="glyphicon glyphicon-log-in"></span>
+          Logout
+        </a></li>
+      </ul>
+    </ng-template>
+    <ng-template #elseBlock2>
+      <ul  class="nav navbar-nav navbar-right">
+        <li style="margin-right: 25px"><a routerLink="/login">Login</a></li>
+        <li><a routerLink="/registar">Criar conta</a></li>
+      </ul>
+    </ng-template>
+  </div>
+</nav>
+
+<div style="max-width: 1600px; margin: auto">
+  <h1>Editar Membro</h1>
+  <hr>
+
+  <div *ngIf="error" class="alert alert-danger" role="alert">
+    Os campos inseridos são inválidos!
+  </div>
+  <!--
+  <form action="." method="post"  enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row" style="margin:0 30% 0 30% ">
+      <div class="col-sm-2" style="margin-top: auto; margin-bottom: auto; font-size: 22px">
+        {{ form.nome.label}}
+      </div>
+      <div class="col-sm-10">
+        {{ form.nome }}
+      </div>
+    </div>
+    <hr>
+    <div class="row" style="height: 440px">
+      <div class="zoom conteudo col-sm-7">
+        <img src="/{{ trabalhador.foto }}" style="max-width: 600px; height: 400px" >
+      </div>
+      <div class="col-sm-5" style="text-align:left;">
+        <br><br>
+        <div class="form-group mb-2" style="display: grid;grid-template-columns: 1fr 4fr; height: 200px; position: relative; right: 50px">
+          <label style="margin-bottom: auto; margin-top: auto; font-size: 18px">Trabalhos: </label>
+          {{ form.trabalhos }}
+        </div>
+      </div>
+      <br><br>
+
+    </div>
+    <div class="row">
+      <div class="col-sm-7">
+        {{ form.foto }}
+      </div>
+      <div class="col-sm-5">
+        <button style="width: 150px" class="btn btn-success" type="submit">Guardar</button>
+      </div>
+    </div>
+    <hr>
+
+  </form>
+  -->
+  <div *ngIf="formReady" class="form-group" style="margin-top: 20px">
+    <form class="login-form" [formGroup]="formGroup" (ngSubmit)="editarProcess()">
+      <div class="row" style="margin:0 30% 0 30% ">
+        <div class="col-sm-2" style="margin-top: auto; margin-bottom: auto; font-size: 22px">
+          <label>Nome: </label>
+        </div>
+        <div class="col-sm-10">
+          <input class="form-control" formControlName="nome">
+        </div>
+      </div>
+      <hr>
+      <div class="row" style="height: 440px">
+        <div class="zoom conteudo col-sm-7">
+          <img src="http://localhost:8000{{ membrostaff.foto }}"  style="max-width: 600px; height: 400px">
+        </div>
+        <div class="col-sm-5" style="text-align:left;">
+          <br><br>
+          <div class="form-group mb-2" style="display: grid;grid-template-columns: 1fr 4fr; height: 200px; position: relative; right: 50px">
+            <label>Trabalhos: </label>
+            <select [(ngModel)]="selectedTrabalhos" multiple="multiple" class="form-control" formControlName="trabalho">
+              <option *ngFor="let trabalho of trabalhos" [value]="trabalho[0].id">{{ trabalho[1] + ' - ' + trabalho[0].posicao  }}</option>
+            </select>
+          </div>
+        </div>
+        <br><br>
+      </div>
+      <div class="row">
+        <!--
+        <div class="col-sm-7">
+          <label>Foto: </label>
+          <input formControlName="foto" type="file">
+        </div>
+        -->
+        <div class="col-sm-7">
+            <label>Foto: </label>
+            <input  type="file" (change)="onSelectedFile($event)">
+        </div>
+        <button style="width: 150px" class="btn btn-success" type="submit">Guardar</button>
+      </div>
+    </form>
+  </div>
+
+</div>

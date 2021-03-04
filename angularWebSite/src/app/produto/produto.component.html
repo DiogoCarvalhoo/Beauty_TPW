@@ -1,0 +1,90 @@
+<nav class="navbar navbar-expand-lg navbar-light " style="background: whitesmoke">
+  <a routerLink="/home"><img style="height: 80px; width: 133px; margin-right: 20px" src="http://localhost:8000/static/images/logo2.png"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/listaInstitutos" style="width: 133px; height: 80px; padding-top: 30px">Institutos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/listaServicos" style="width: 133px; height: 80px; padding-top: 30px">Serviços</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/listaProdutos" style="width: 133px; height: 80px; padding-top: 30px">Produtos</a>
+      </li>
+      <div *ngIf="userLogado; then thenBlock1"></div>
+      <ng-template #thenBlock1>
+        <li class="nav-item">
+          <div class="dropdown show">
+            <a style="width: 133px; height: 80px; padding-top: 30px" class="nav-link" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Gestão
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <a class="dropdown-item" routerLink="/geririnstitutos">Seus Institutos</a>
+              <a class="dropdown-item" routerLink="/gerirprodutos">Seus Produtos</a>
+              <a class="dropdown-item" routerLink="/gerirservicos">Seus Serviços</a>
+              <a class="dropdown-item" routerLink="/gerirstaff">Seu Staff</a>
+            </div>
+          </div>
+        </li>
+      </ng-template>
+      <div *ngIf="userName == 'projeto'; then thenBlock3"></div>
+      <ng-template #thenBlock3>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/areareservada" style="width: 150px; height: 80px; padding-top: 30px">Área Reservada</a>
+        </li>
+      </ng-template>
+    </ul>
+    <div *ngIf="userLogado; then thenBlock2 else elseBlock2"></div>
+    <ng-template #thenBlock2>
+      <ul class="nav navbar-nav navbar-right" >
+        <li style="text-align: right;"><a routerLink="/account">
+          <img src="http://localhost:8000/static/images/user.png" style="width: 5%">
+          <span class="glyphicon glyphicon-log-in">&nbsp;</span>
+          {{ userName }}
+          <span class="glyphicon glyphicon-log-in">&nbsp; &nbsp;</span>
+        </a></li>
+        <li style="text-align: right; margin-top: 0.25%"><a (click)="logout()" >
+          <span class="glyphicon glyphicon-log-in"></span>
+          Logout
+        </a></li>
+      </ul>
+    </ng-template>
+    <ng-template #elseBlock2>
+      <ul  class="nav navbar-nav navbar-right">
+        <li style="margin-right: 25px"><a routerLink="/login">Login</a></li>
+        <li><a routerLink="/registar">Criar conta</a></li>
+      </ul>
+    </ng-template>
+  </div>
+</nav>
+
+
+<h1 style="margin: 30px 0;"> {{ produto.nome }}</h1>
+<hr>
+<div class="zoom conteudo" style="height: 440px">
+  <img src="http://localhost:8000{{ produto.foto }}" style="float: left; margin-left: 100px; height: 440px; max-width: 800px">
+  <div class="text-item" style="width: 90%; position: relative; left: 100px">
+    <h2 style="padding-top: 20px; margin-bottom: 40px"> {{ produto.descricao }}</h2>
+    <div style="text-align: left; line-height: 2; font-size: 20px">
+      <p> Categoria: {{ produto.categoria.nome }}</p>
+      <p> Preço: {{ produto.preco }}€</p>
+      <p> Vendedores:</p>
+      <div *ngFor="let vendedor of vendedores">
+        <a [routerLink]= "['/instituto', vendedor.id]">{{ vendedor.nome }}</a> <br> &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+      </div>
+      <div *ngIf="produto.quantidade > 9; then firstThenBlock else firstElseBlock"></div>
+      <ng-template #firstThenBlock>
+        <p> Quantidade: {{ produto.quantidade }}ml</p>
+      </ng-template>
+      <ng-template #firstElseBlock>
+        <p> Quantidade: {{ produto.quantidade }} items</p>
+      </ng-template>
+    </div>
+  </div>
+</div>
+<hr>

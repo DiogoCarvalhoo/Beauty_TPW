@@ -1,0 +1,153 @@
+<nav class="navbar navbar-expand-lg navbar-light " style="background: whitesmoke">
+  <a routerLink="/home"><img style="height: 80px; width: 133px; margin-right: 20px" src="http://localhost:8000/static/images/logo2.png"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/listaInstitutos" style="width: 133px; height: 80px; padding-top: 30px">Institutos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/listaServicos" style="width: 133px; height: 80px; padding-top: 30px">Serviços</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/listaProdutos" style="width: 133px; height: 80px; padding-top: 30px">Produtos</a>
+      </li>
+      <div *ngIf="userLogado; then thenBlock1"></div>
+      <ng-template #thenBlock1>
+        <li class="nav-item">
+          <div class="dropdown show">
+            <a style="width: 133px; height: 80px; padding-top: 30px" class="nav-link" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Gestão
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <a class="dropdown-item" routerLink="/geririnstitutos">Seus Institutos</a>
+              <a class="dropdown-item" routerLink="/gerirprodutos">Seus Produtos</a>
+              <a class="dropdown-item" routerLink="/gerirservicos">Seus Serviços</a>
+              <a class="dropdown-item" routerLink="/gerirstaff">Seu Staff</a>
+            </div>
+          </div>
+        </li>
+      </ng-template>
+      <div *ngIf="userName == 'projeto'; then thenBlock3"></div>
+      <ng-template #thenBlock3>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/areareservada" style="width: 150px; height: 80px; padding-top: 30px">Área Reservada</a>
+        </li>
+      </ng-template>
+    </ul>
+    <div *ngIf="userLogado; then thenBlock2 else elseBlock2"></div>
+    <ng-template #thenBlock2>
+      <ul class="nav navbar-nav navbar-right" >
+        <li style="text-align: right;"><a routerLink="/account">
+          <img src="http://localhost:8000/static/images/user.png" style="width: 5%">
+          <span class="glyphicon glyphicon-log-in">&nbsp;</span>
+          {{ userName }}
+          <span class="glyphicon glyphicon-log-in">&nbsp; &nbsp;</span>
+        </a></li>
+        <li style="text-align: right; margin-top: 0.25%"><a (click)="logout()" >
+          <span class="glyphicon glyphicon-log-in"></span>
+          Logout
+        </a></li>
+      </ul>
+    </ng-template>
+    <ng-template #elseBlock2>
+      <ul  class="nav navbar-nav navbar-right">
+        <li style="margin-right: 25px"><a routerLink="/login">Login</a></li>
+        <li><a routerLink="/registar">Criar conta</a></li>
+      </ul>
+    </ng-template>
+  </div>
+</nav>
+
+
+
+<h1 style="margin: 30px 0;"> {{ instituto.nome }}</h1>
+<hr>
+<div class="zoom conteudo" style="height: 440px">
+  <img src="http://localhost:8000{{ instituto.foto }}" style="float: left; margin-left: 100px;max-width: 800px">
+  <div class="text-item" style="width: 90%; position: relative; left: 100px">
+    <h2 style="padding-top: 20px; margin-bottom: 40px"> {{ instituto.slogan }}</h2>
+    <div style="text-align: left; line-height: 2; font-size: 20px">
+      <p> Localização: {{ instituto.localizacao }}</p>
+      <p> Email: {{ instituto.email }}</p>
+      <p> WebSite: <a href="{{ instituto.website }}">{{ instituto.website }}</a></p>
+    </div>
+  </div>
+</div>
+<hr>
+<h2 style="margin-bottom: 30px">Serviços: </h2>
+
+<div *ngIf="servicosList !== undefined && servicosList.length > 0; then firstThenBlock else firstElseBlock"></div>
+<ng-template #firstThenBlock>
+  <ul style="width: 80%; margin: auto" class="list-group list-group-flush">
+    <li  *ngFor="let servico of servicosList" class="list-group-item" style="margin-bottom: 20px">
+      <div class="row">
+        <img style="height: 30px; margin-left: 40px; margin-right: 50px" src="http://localhost:8000{{ servico.categoria.foto }}">
+        <div class="col-md-3 col-xs-6 divTableCell">
+          <a style="font-size: 16px" [routerLink]= "['/servico', servico.id]">{{ servico.nome }}</a>
+        </div>
+        <div class="col-md-3 col-xs-6 divTableCell">
+          {{ servico.preco }}€
+        </div>
+      </div>
+    </li>
+  </ul>
+</ng-template>
+<ng-template #firstElseBlock>
+  <p>Não possuí qualquer Serviço associado.</p>
+</ng-template>
+
+<hr>
+<h2 style="margin-bottom: 30px">Produtos:</h2>
+
+<div *ngIf="produtosList !== undefined && produtosList.length > 0; then secondThenBlock else secondElseBlock"></div>
+<ng-template #secondThenBlock>
+  <ul style="width: 80%; margin: auto" class="list-group list-group-flush">
+    <li *ngFor="let produto of produtosList" class="list-group-item" style="margin-bottom: 20px">
+      <div class="row">
+        <img style="height: 30px; margin-left: 40px; margin-right: 50px" src="http://localhost:8000{{ produto.categoria.foto }}">
+        <div class="col-md-3 col-xs-6 divTableCell">
+          <a style="font-size: 16px" [routerLink]= "['/produto', produto.id]">{{ produto.nome }}</a>
+        </div>
+        <div class="col-md-3 col-xs-6 divTableCell">
+          {{ produto.preco }}€
+        </div>
+      </div>
+    </li>
+  </ul>
+</ng-template>
+<ng-template #secondElseBlock>
+  <p>Não possuí qualquer Produto associado.</p>
+</ng-template>
+
+
+<hr>
+<h2 style="margin-bottom: 30px">Staff:</h2>
+
+<div *ngIf="(staffDict | json) != ('{}'); then thenBlock4 else elseBlock4"> </div>
+<ng-template #thenBlock4>
+  <div *ngFor="let item of staffDict | keyvalue" class="card-zoom card-deck" style="width: 372.59px; display: inline-block; margin: 30px 20px">
+    <div class="card">
+      <img class="card-img-top" src="http://localhost:8000{{ staffDict[item.key].foto }}" alt="Card image cap" style="width: 340.59px; height: 320.59px;">
+      <div class="card-body" style="width: 340.59px;">
+        <h5 class="card-title" style="width: 300.59px; height: 30.59px;">{{ staffDict[item.key].nome }}</h5>
+      </div>
+      <div class="card-footer" style="width: 340.59px;">
+        <small *ngFor="let item2 of trabalhosDict[item.key] | keyvalue" class="text-muted" style="width: 280.59px; height: 50.59px;">
+          {{ trabalhosDict[item.key][item2.key].posicao }} <br>
+        </small>
+      </div>
+    </div>
+  </div>
+
+</ng-template>
+<ng-template #elseBlock4>
+  <p>Não possuí qualquer Staff associado.</p>
+</ng-template>
+
+
+

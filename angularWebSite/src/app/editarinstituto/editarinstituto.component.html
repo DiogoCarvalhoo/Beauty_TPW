@@ -1,0 +1,236 @@
+<nav class="navbar navbar-expand-lg navbar-light " style="background: whitesmoke">
+  <a routerLink="/home"><img style="height: 80px; width: 133px; margin-right: 20px" src="http://localhost:8000/static/images/logo2.png"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/listaInstitutos" style="width: 133px; height: 80px; padding-top: 30px">Institutos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/listaServicos" style="width: 133px; height: 80px; padding-top: 30px">Serviços</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/listaProdutos" style="width: 133px; height: 80px; padding-top: 30px">Produtos</a>
+      </li>
+      <div *ngIf="userLogado; then thenBlock1"></div>
+      <ng-template #thenBlock1>
+        <li class="nav-item">
+          <div class="dropdown show">
+            <a style="width: 133px; height: 80px; padding-top: 30px" class="nav-link" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Gestão
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <a class="dropdown-item" routerLink="/geririnstitutos">Seus Institutos</a>
+              <a class="dropdown-item" routerLink="/gerirprodutos">Seus Produtos</a>
+              <a class="dropdown-item" routerLink="/gerirservicos">Seus Serviços</a>
+              <a class="dropdown-item" routerLink="/gerirstaff">Seu Staff</a>
+            </div>
+          </div>
+        </li>
+      </ng-template>
+      <div *ngIf="userName == 'projeto'; then thenBlock3"></div>
+      <ng-template #thenBlock3>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/areareservada" style="width: 150px; height: 80px; padding-top: 30px">Área Reservada</a>
+        </li>
+      </ng-template>
+    </ul>
+    <div *ngIf="userLogado; then thenBlock2 else elseBlock2"></div>
+    <ng-template #thenBlock2>
+      <ul class="nav navbar-nav navbar-right" >
+        <li style="text-align: right;"><a routerLink="/account">
+          <img src="http://localhost:8000/static/images/user.png" style="width: 5%">
+          <span class="glyphicon glyphicon-log-in">&nbsp;</span>
+          {{ userName }}
+          <span class="glyphicon glyphicon-log-in">&nbsp; &nbsp;</span>
+        </a></li>
+        <li style="text-align: right; margin-top: 0.25%"><a (click)="logout()" >
+          <span class="glyphicon glyphicon-log-in"></span>
+          Logout
+        </a></li>
+      </ul>
+    </ng-template>
+    <ng-template #elseBlock2>
+      <ul  class="nav navbar-nav navbar-right">
+        <li style="margin-right: 25px"><a routerLink="/login">Login</a></li>
+        <li><a routerLink="/registar">Criar conta</a></li>
+      </ul>
+    </ng-template>
+  </div>
+</nav>
+
+<div style="max-width: 1600px; margin: auto">
+  <h1>Editar instituto</h1>
+  <hr>
+
+  <div *ngIf="error" class="alert alert-danger" role="alert">
+    Os campos inseridos são inválidos!
+  </div>
+
+  <!--
+  <form action="." method="post"  enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row" style="margin:0 30% 0 30% ">
+      <div class="col-sm-2" style="margin-top: auto; margin-bottom: auto; font-size: 22px">
+        {{ form.nome.label}}
+      </div>
+      <div class="col-sm-10">
+        {{ form.nome }}
+      </div>
+    </div>
+    <hr>
+    <div class="row" style="height: 440px">
+      <div class="zoom conteudo col-sm-7">
+        <img src="/{{ instituto.foto }}" >
+      </div>
+      <div class="col-sm-5" style="text-align:left;">
+        <br><br>
+        <div class="form-group mb-2" style="display: grid;grid-template-columns: 1fr 4fr;">
+          <label style="margin-bottom: auto; margin-top: auto; font-size: 18px">Slogan: </label>
+          {{ form.slogan }}
+        </div>
+        <div class="form-group mb-2" style="display: grid;grid-template-columns: 1fr 4fr;">
+          <label style="margin-bottom: auto; margin-top: auto;font-size: 18px">Localização: </label>
+          {{ form.localizacao }}
+        </div>
+        <div class="form-group mb-2" style="display: grid;grid-template-columns: 1fr 4fr;">
+          <label style="margin-bottom: auto; margin-top: auto;font-size: 18px">E-mail: </label>
+          {{ form.email }}
+        </div>
+        <div class="form-group mb-2" style="display: grid;grid-template-columns: 1fr 4fr;">
+          <label style="margin-bottom: auto; margin-top: auto;font-size: 18px">Website: </label>
+          {{ form.website }}
+        </div>
+
+      </div>
+      <br><br>
+
+    </div>
+    <div class="row">
+      <div class="col-sm-7">
+        {{ form.foto }}
+      </div>
+      <div class="col-sm-5">
+        <button style="width: 150px" class="btn btn-success" type="submit">Guardar</button>
+      </div>
+    </div>
+    <hr>
+
+  </form>
+  -->
+  <div *ngIf="formReady" class="form-group" style="margin-top: 20px">
+    <form class="login-form" [formGroup]="formGroup" (ngSubmit)="editarProcess()" >
+      <div class="row" style="margin:0 30% 0 30% ">
+        <div class="col-sm-2" style="margin-top: auto; margin-bottom: auto; font-size: 22px">
+          <label>Nome: </label>
+        </div>
+        <div class="col-sm-10">
+          <input class="form-control" formControlName="nome">
+        </div>
+      </div>
+
+      <hr>
+      <div class="row" style="height: 440px">
+        <div class="zoom conteudo col-sm-7">
+          <img src="http://localhost:8000{{ instituto.foto }}" style="max-width: 600px; height: 400px" >
+        </div>
+        <div class="col-sm-5" style="text-align:left;">
+          <br><br>
+          <div class="form-group mb-2" style="display: grid;grid-template-columns: 1fr 4fr;">
+            <label>Slogan: </label>
+            <input class="form-control" formControlName="slogan">
+          </div>
+          <div class="form-group mb-2" style="display: grid;grid-template-columns: 1fr 4fr;">
+            <label>Localização: </label>
+            <input class="form-control" formControlName="localizacao">
+          </div>
+          <div class="form-group mb-2" style="display: grid;grid-template-columns: 1fr 4fr;">
+            <label>Email: </label>
+            <input class="form-control" formControlName="email" type="email">
+          </div>
+          <div class="form-group mb-2" style="display: grid;grid-template-columns: 1fr 4fr;">
+            <label>Website: </label>
+            <input class="form-control" formControlName="website" type="url">
+          </div>
+        </div>
+        <br><br>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-7">
+          <label>Foto: </label>
+          <input  type="file" (change)="onSelectedFile($event)">
+        </div>
+        <div class="col-sm-5">
+          <button style="width: 150px" class="btn btn-success" type="submit">Guardar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+
+  <h2 style="margin-bottom: 30px">Serviços: </h2>
+  <ul style="width: 80%; margin: auto" class="list-group list-group-flush">
+    <li *ngFor="let servico of servicolist" class="list-group-item" style="margin-bottom: 20px">
+      <div class="row">
+        <img style="height: 30px; margin-left: 40px; margin-right: 50px" src="http://localhost:8000{{ servico.categoria.foto }}">
+        <div class="col-md-3 col-xs-6 divTableCell">
+          <a style="font-size: 16px" href="/servico/{{ servico.id }}/">{{ servico.nome }}</a>
+        </div>
+        <div class="col-md-3 col-xs-6 divTableCell">
+          {{ servico.preco }}€
+        </div>
+        <img src="http://localhost:8000/static/images/editicon.png" style="width: 25px; position: absolute; right: 70px;" [routerLink]= "['/editarservico', servico.id]">
+        <img src="http://localhost:8000/static/images/deleteicon.png" style="width: 25px; margin-left: 30px; position: absolute; right: 30px;" (click)="removerServico(servico)">
+      </div>
+    </li>
+  </ul>
+  <hr>
+  <h2 style="margin-bottom: 30px">Produtos: </h2>
+  <ul style="width: 80%; margin: auto" class="list-group list-group-flush">
+    <li *ngFor="let produto of produtolist"  class="list-group-item" style="margin-bottom: 20px">
+      <div class="row">
+        <img style="height: 30px; margin-left: 40px; margin-right: 50px" src="http://localhost:8000{{ produto.categoria.foto }}">
+        <div class="col-md-3 col-xs-6 divTableCell">
+          <a style="font-size: 16px" href="/produto/{{ produto.id }}/">{{ produto.nome }}</a>
+        </div>
+        <div class="col-md-3 col-xs-6 divTableCell">
+          {{ produto.preco }}€
+        </div>
+        <img src="http://localhost:8000/static/images/editicon.png" style="width: 25px; position: absolute; right: 70px;" [routerLink]= "['/editarproduto', produto.id]">
+        <img src="http://localhost:8000/static/images/deleteicon.png" style="width: 25px; margin-left: 30px; position: absolute; right: 30px; " (click)="removerProduto(produto)">
+      </div>
+    </li>
+  </ul>
+  <hr>
+
+  <h2 style="margin-bottom: 30px">Staff:</h2>
+  <div *ngIf="(staffDict | json) != ('{}'); then thenBlock4 else elseBlock4"></div>
+  <ng-template #thenBlock4>
+    <div *ngFor="let item of staffDict | keyvalue" class="card-zoom card-deck" style="width: 372.59px; display: inline-block; margin: 30px 20px">
+      <div class="card">
+        <img class="card-img-top" src="http://localhost:8000{{ staffDict[item.key].foto }}" alt="Card image cap" style="width: 340.59px; height: 320.59px;">
+        <div class="card-body" style="width: 340.59px;">
+          <h5 class="card-title" style="width: 300.59px; height: 30.59px;">{{ staffDict[item.key].nome }}</h5>
+        </div>
+        <div class="card-footer" style="width: 340.59px;">
+          <small class="text-muted" style="width: 280.59px; height: 50.59px;">
+            <img src="http://localhost:8000/static/images/editicon.png" style="width: 25px; position: absolute; left: 60px;" [routerLink]= "['/editarstaff', staffDict[item.key].id]">
+            <small *ngFor="let item2 of trabalhosDict[item.key] | keyvalue" class="text-muted" style="width: 280.59px; height: 50.59px;" >
+              {{ trabalhosDict[item.key][item2.key].posicao }} <br>
+            </small>
+            <img src="http://localhost:8000/static/images/deleteicon.png" style="width: 25px; position: absolute; right: 60px; top: 416px" (click)="removerStaff(staffDict[item.key])">
+          </small>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #elseBlock4>
+    <p>Não possuí qualquer Staff associado.</p>
+  </ng-template>
+
+</div>

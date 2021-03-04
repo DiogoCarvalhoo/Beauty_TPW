@@ -1,0 +1,226 @@
+<nav class="navbar navbar-expand-lg navbar-light " style="background: whitesmoke">
+  <a routerLink="/home"><img style="height: 80px; width: 133px; margin-right: 20px" src="http://localhost:8000/static/images/logo2.png"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/listaInstitutos" style="width: 133px; height: 80px; padding-top: 30px">Institutos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/listaServicos" style="width: 133px; height: 80px; padding-top: 30px">Serviços</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/listaProdutos" style="width: 133px; height: 80px; padding-top: 30px">Produtos</a>
+      </li>
+      <div *ngIf="userLogado; then thenBlock1"></div>
+      <ng-template #thenBlock1>
+        <li class="nav-item">
+          <div class="dropdown show">
+            <a style="width: 133px; height: 80px; padding-top: 30px" class="nav-link" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Gestão
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <a class="dropdown-item" routerLink="/geririnstitutos">Seus Institutos</a>
+              <a class="dropdown-item" routerLink="/gerirprodutos">Seus Produtos</a>
+              <a class="dropdown-item" routerLink="/gerirservicos">Seus Serviços</a>
+              <a class="dropdown-item" routerLink="/gerirstaff">Seu Staff</a>
+            </div>
+          </div>
+        </li>
+      </ng-template>
+      <div *ngIf="userName == 'projeto'; then thenBlock3"></div>
+      <ng-template #thenBlock3>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/areareservada" style="width: 150px; height: 80px; padding-top: 30px">Área Reservada</a>
+        </li>
+      </ng-template>
+    </ul>
+    <div *ngIf="userLogado; then thenBlock2 else elseBlock2"></div>
+    <ng-template #thenBlock2>
+      <ul class="nav navbar-nav navbar-right" >
+        <li style="text-align: right;"><a routerLink="/account">
+          <img src="http://localhost:8000/static/images/user.png" style="width: 5%">
+          <span class="glyphicon glyphicon-log-in">&nbsp;</span>
+          {{ userName }}
+          <span class="glyphicon glyphicon-log-in">&nbsp; &nbsp;</span>
+        </a></li>
+        <li style="text-align: right; margin-top: 0.25%"><a (click)="logout()" >
+          <span class="glyphicon glyphicon-log-in"></span>
+          Logout
+        </a></li>
+      </ul>
+    </ng-template>
+    <ng-template #elseBlock2>
+      <ul  class="nav navbar-nav navbar-right">
+        <li style="margin-right: 25px"><a routerLink="/login">Login</a></li>
+        <li><a routerLink="/registar">Criar conta</a></li>
+      </ul>
+    </ng-template>
+  </div>
+</nav>
+
+
+
+<div style="max-width: 1400px; margin: auto">
+  <br /> <br />
+  <h1>Serviços</h1>
+  <hr>
+  <!--
+  <form action="." method="post" class="form-inline" style="margin-left: 85px">
+    {% csrf_token %}
+    <div class="form-group mb-2" style="display: grid;grid-template-columns: 1fr 4fr; margin-left: 145px">
+      {{ form.nome.label }}
+      {{ form.nome }}
+    </div>
+    <span>&nbsp; &nbsp;</span>
+    <div class="form-group mb-2" style="display: grid;grid-template-columns: 1.3fr 3fr;" >
+      {{ form.instituto.label }}
+      {{ form.instituto }}
+    </div>
+    <span>&nbsp; &nbsp;</span>
+    <div class="form-group mb-2" style="display: grid;grid-template-columns: 1.3fr 3fr; margin-right: 100px" >
+      {{ form.categoria.label }}
+      {{ form.categoria }}
+    </div>
+    <span>&nbsp; &nbsp;</span>
+    <div class="form-group mb-2" style="display: grid;grid-template-columns: 125px 80px; margin-left: 145px" >
+      {{ form.minprice.label }}
+      {{ form.minprice }}
+    </div>
+    <span>&nbsp; &nbsp;</span>
+    <div class="form-group mb-2" style="display: grid;grid-template-columns: 125px 80px;" >
+      {{ form.maxprice.label }}
+      {{ form.maxprice }}
+    </div>
+    <span>&nbsp; &nbsp;</span>
+    <button type="submit" class="btn btn-outline-secondary" style="margin-bottom: 7px; margin-left: 392px">Search</button>
+  </form>
+  -->
+
+  <div *ngIf="formReady" class="form-group" style="margin-top: 20px">
+    <form class="form-inline" [formGroup]="formGroup" (ngSubmit)="pesquisa()">
+      <div class="form-group mb-2" style="display: grid;grid-template-columns: 1fr 4fr; margin-left: 145px">
+        <label>Nome: </label>
+        <input class="form-control" placeholder="ex: corte de cabelo" formControlName="nome">
+      </div>
+      <br>
+      <span>&nbsp; &nbsp;</span>
+      <div class="form-group mb-2" style="display: grid;grid-template-columns: 1.3fr 3fr;" >
+        <label>Instituto: </label>
+        <select  class="form-control" formControlName="instituto">
+          <option value="-1">--Selecione--</option>
+          <option *ngFor="let instituto of institutos" [value]="instituto.id">{{ instituto.nome }}</option>
+        </select>
+      </div>
+      <span>&nbsp; &nbsp;</span>
+      <div class="form-group mb-2" style="display: grid;grid-template-columns: 1.3fr 3fr; margin-right: 100px" >
+        <label>Categoria: </label>
+        <select  class="form-control" formControlName="categoria">
+          <option value="-1">--Selecione--</option>
+          <option *ngFor="let categoria of categorias" [value]="categoria.id">{{ categoria.nome }}</option>
+        </select>
+      </div>
+      <span>&nbsp; &nbsp;</span>
+      <div class="form-group mb-2" style="display: grid;grid-template-columns: 125px 90px; margin-left: 145px" >
+        <label>Preço Mínimo: </label>
+        <input class="form-control" placeholder="ex: 5" formControlName="precomin" type="number">
+      </div>
+      <span>&nbsp; &nbsp;</span>
+      <div class="form-group mb-2" style="display: grid;grid-template-columns: 125px 90px;" >
+        <label>Preço Máximo: </label>
+        <input class="form-control" placeholder="ex: 15" formControlName="precomax" type="number">
+      </div>
+      <br>
+      <button type="submit" class="btn btn-outline-secondary" style="margin-bottom: 7px; margin-left: 392px">Search</button>
+    </form>
+  </div>
+
+
+
+  <p *ngIf="error">ERROR: Insert a query term.</p>
+
+  <div *ngIf="!error; then firstThenBlock"></div>
+
+  <ng-template #firstThenBlock>
+    <!--
+    {% if query != None %}
+    {% if query.nome != "" or query.instituto != "" or query.minprice != "" or query.maxprice != "" or query.categoria != "" %}
+    <p>Search by:
+      {% if query.nome != "" %}
+      Nome: <strong>{{ query.nome }}</strong>
+      {% endif %}
+      {% if query.instituto != "" %}
+      Instituto: <strong>{{ query.instituto.nome }}</strong>
+      {% endif %}
+      {% if query.minprice != "" %}
+      Minprice: <strong>{{ query.minprice }}€</strong>
+      {% endif %}
+      {% if query.maxprice != "" %}
+      Maxprice: <strong>{{ query.maxprice }}€</strong>
+      {% endif %}
+      {% if query.categoria != "" %}
+      Categoria: <strong>{{ query.categoria }}</strong>
+      {% endif %}
+    </p>
+    {% endif %}
+    {% endif %}
+    -->
+    <div *ngIf="page_obj; then secondThenBlock else secondElseBlock"></div>
+    <ng-template #secondThenBlock>
+      <br>
+     <!-- <p>Found {{ numeroResultados }} service{{ page_obj|pluralize }}.</p>-->
+
+  <div *ngFor="let servico of servicosList" class="card-zoom card-deck"  style="width: 372.59px; display: inline-block; margin: 30px 20px">
+    <div class="card" [routerLink]="['/servico', servico.id]">
+      <img class="card-img-top" src="http://localhost:8000{{ servico.foto }}" alt="Card image cap" style="width: 340.59px; height: 320.59px;">
+      <div class="card-body" style="width: 340.59px;">
+        <h5 class="card-title" style="width: 300.59px; height: 30.59px;">{{ servico.nome}}</h5>
+        <p class="card-text" style="width: 300.59px; height: 120.59px; margin-top: 30px; line-height: 1.2">{{ servico.descricao }}</p>
+      </div>
+      <div class="card-footer" style="width: 340.59px;">
+        <small class="text-muted" style="width: 280.59px; height: 50.59px;">{{ servico.preco }}€</small>
+      </div>
+    </div>
+  </div>
+
+    <div class="page-buttons">
+      <button class="btn prev" (click)="fetchPrevious()"> Prev
+      </button>
+      &nbsp;
+      <button class="btn next" (click)="fetchNext()"> Next
+      </button>
+    </div>
+
+   <!--
+  <div class="pagination" style="margin: 15px 0">
+                            <span class="step-links" style="margin: auto">
+                                {% if page_obj.has_previous %}
+                                    <a href="?page=1">&laquo; Go To First</a>
+                                    &nbsp &nbsp
+                                    <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                              {% endif %}
+                                &nbsp &nbsp
+                                <span class="current">
+                                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                                </span>
+                                &nbsp &nbsp
+                              {% if page_obj.has_next %}
+                                    <a href="?page={{ page_obj.next_page_number }}">Next</a>
+                                    &nbsp &nbsp
+                                    <a href="?page={{ page_obj.paginator.num_pages }}">Go To Last &raquo;</a>
+                              {% endif %}
+                            </span>
+  </div>
+  -->
+
+    </ng-template>
+    <ng-template #secondElseBlock>
+      <p>Not found any result.</p>
+    </ng-template>
+  </ng-template>
+
+</div>

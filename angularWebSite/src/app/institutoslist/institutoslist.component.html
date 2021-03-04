@@ -1,0 +1,206 @@
+<nav class="navbar navbar-expand-lg navbar-light " style="background: whitesmoke">
+  <a routerLink="/home"><img style="height: 80px; width: 133px; margin-right: 20px" src="http://localhost:8000/static/images/logo2.png"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/listaInstitutos" style="width: 133px; height: 80px; padding-top: 30px">Institutos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/listaServicos" style="width: 133px; height: 80px; padding-top: 30px">Serviços</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/listaProdutos" style="width: 133px; height: 80px; padding-top: 30px">Produtos</a>
+      </li>
+      <div *ngIf="userLogado; then thenBlock1"></div>
+      <ng-template #thenBlock1>
+        <li class="nav-item">
+          <div class="dropdown show">
+            <a style="width: 133px; height: 80px; padding-top: 30px" class="nav-link" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Gestão
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <a class="dropdown-item" routerLink="/geririnstitutos">Seus Institutos</a>
+              <a class="dropdown-item" routerLink="/gerirprodutos">Seus Produtos</a>
+              <a class="dropdown-item" routerLink="/gerirservicos">Seus Serviços</a>
+              <a class="dropdown-item" routerLink="/gerirstaff">Seu Staff</a>
+            </div>
+          </div>
+        </li>
+      </ng-template>
+      <div *ngIf="userName == 'projeto'; then thenBlock3"></div>
+      <ng-template #thenBlock3>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/areareservada" style="width: 150px; height: 80px; padding-top: 30px">Área Reservada</a>
+        </li>
+      </ng-template>
+    </ul>
+    <div *ngIf="userLogado; then thenBlock2 else elseBlock2"></div>
+    <ng-template #thenBlock2>
+      <ul class="nav navbar-nav navbar-right" >
+        <li style="text-align: right;"><a routerLink="/account">
+          <img src="http://localhost:8000/static/images/user.png" style="width: 5%">
+          <span class="glyphicon glyphicon-log-in">&nbsp;</span>
+          {{ userName }}
+          <span class="glyphicon glyphicon-log-in">&nbsp; &nbsp;</span>
+        </a></li>
+        <li style="text-align: right; margin-top: 0.25%"><a (click)="logout()" >
+          <span class="glyphicon glyphicon-log-in"></span>
+          Logout
+        </a></li>
+      </ul>
+    </ng-template>
+    <ng-template #elseBlock2>
+      <ul  class="nav navbar-nav navbar-right">
+        <li style="margin-right: 25px"><a routerLink="/login">Login</a></li>
+        <li><a routerLink="/registar">Criar conta</a></li>
+      </ul>
+    </ng-template>
+  </div>
+</nav>
+
+
+<div style="max-width: 1200px; margin: auto">
+  <br /> <br />
+  <h1>Institutos</h1>
+  <hr>
+  <!-- Este Form foi substituido pelo codigo embaixo
+<form action="." method="post" class="form-inline">
+  <div class="form-group mb-2" style="display: grid;grid-template-columns: 1fr 4fr;">
+    {{ form.nome.label }}
+    {{ form.nome }}
+  </div>
+  <span>&nbsp; &nbsp;</span>
+  <div class="form-group mb-2" style="display: grid;grid-template-columns: 1fr 2.3fr;" >
+    {{ form.localizacao.label }}
+    {{ form.localizacao }}
+  </div>
+  <span>&nbsp; &nbsp;</span>
+  <button type="submit" class="btn btn-outline-secondary" style="margin-bottom: 7px; margin-left: 440px">Search</button>
+</form>
+-->
+
+  <div *ngIf="formReady" class="form-group" style="margin-top: 20px">
+    <form class="form-inline" [formGroup]="formGroup" (ngSubmit)="pesquisa()">
+      <div class="form-group mb-2" style="display: grid;grid-template-columns: 1fr 4fr;">
+        <label>Nome: </label>
+        <input class="form-control" placeholder="ex: Kaya" formControlName="nome">
+      </div>
+      <span>&nbsp; &nbsp;</span>
+      <div class="form-group mb-2" style="display: grid;grid-template-columns: 1fr 2.3fr;" >
+        <label>Localizacao: </label>
+        <input class="form-control" placeholder="ex: Lisboa" formControlName="localizacao">
+      </div>
+      <span>&nbsp; &nbsp;</span>
+      <button type="submit" class="btn btn-outline-secondary" style="margin-bottom: 7px; margin-left: 440px">Search</button>
+    </form>
+  </div>
+
+  <p *ngIf="error">ERROR: Insert a query term.</p>
+
+  <div *ngIf="!error; then firstThenBlock"></div>
+  <ng-template #firstThenBlock>
+    <div *ngIf="page_obj; then secondThenBlock else secondElseBlock"></div>
+    <ng-template #secondThenBlock>
+      <br>
+      <!--<p>Found {{ numeroResultados }} institute{{ page_obj|pluralize }}.</p>-->
+
+      <ul class="list-group list-group-flush">
+        <div *ngFor="let instituto of institutosList" class="institutolist-item">
+          <li  class="list-group-item" style="margin-bottom: 20px" [routerLink]= "['/instituto', instituto.id]">
+            <img style="height: 100px; float: left; margin-right: 30px; padding-bottom: 20px;" src="http://localhost:8000{{ instituto.foto }}"  [routerLink]= "['/instituto', instituto.id]" >
+            <a style="font-size: 20px"  [routerLink]= "['/instituto', instituto.id]">{{ instituto.nome }}</a>
+            <ul class="ul-Azul" style="line-height: 180%" [routerLink]= "['/instituto', instituto.id]">
+              <li>{{ instituto.slogan }}</li>
+              <li>{{ instituto.localizacao }}</li>
+            </ul>
+          </li>
+        </div>
+        <!--
+        <div class="pagination" style="margin: 15px 0">
+                    <span class="step-links" style="margin: auto">
+                      {% if page_obj.has_previous %}
+                            <a href="?page=1">&laquo; Go To First</a>
+                            &nbsp &nbsp
+                            <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                      {% endif %}
+                        &nbsp &nbsp
+                        <span class="current">
+                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                        </span>
+                        &nbsp &nbsp
+                      {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}">Next</a>
+                            &nbsp &nbsp
+                            <a href="?page={{ page_obj.paginator.num_pages }}">Go To Last &raquo;</a>
+                      {% endif %}
+                    </span>
+        </div>
+        -->
+      </ul>
+    </ng-template>
+    <ng-template #secondElseBlock>
+      <p>Not found any result.</p>
+    </ng-template>
+  </ng-template>
+  <!--
+  {% if not error %}
+  {% if query != None %}
+  {% if query.nome != "" or query.localizacao != "" %}
+  <p>Search by:
+    {% if query.nome != "" %}
+    Nome: <strong>{{ query.nome }}</strong>
+    {% endif %}
+    {% if query.localizacao != "" %}
+    Localização: <strong>{{ query.localizacao }}</strong>
+    {% endif %}
+  </p>
+  {% endif %}
+  {% endif %}
+  {% if page_obj %}
+  <br>
+  <p>Found {{ numeroResultados }} institute{{ page_obj|pluralize }}.</p>
+
+  <ul class="list-group list-group-flush">
+    {% for instituto in page_obj %}
+    <div class="institutolist-item">
+      <li  class="list-group-item" style="margin-bottom: 20px">
+        <img style="height: 100px; float: left; margin-right: 30px; padding-bottom: 20px;" src="/{{ instituto.foto }}" onclick="location.href='/instituto/{{ instituto.id }}/'">
+        <a style="font-size: 20px" href="/instituto/{{ instituto.id }}/">{{ instituto.nome }}</a>
+        <ul class="ul-Azul" style="line-height: 180%">
+          <li>{{ instituto.slogan }}</li>
+          <li>{{ instituto.localizacao }}</li>
+        </ul>
+      </li>
+    </div>
+    {% endfor %}
+    <div class="pagination" style="margin: 15px 0">
+                    <span class="step-links" style="margin: auto">
+                        {% if page_obj.has_previous %}
+                            <a href="?page=1">&laquo; Go To First</a>
+                            &nbsp &nbsp
+                            <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                      {% endif %}
+                        &nbsp &nbsp
+                        <span class="current">
+                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                        </span>
+                        &nbsp &nbsp
+                      {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}">Next</a>
+                            &nbsp &nbsp
+                            <a href="?page={{ page_obj.paginator.num_pages }}">Go To Last &raquo;</a>
+                      {% endif %}
+                    </span>
+    </div>
+  </ul>
+  {% else %}
+  <p>Not found any result.</p>
+  {% endif %}
+  {% endif %}
+  -->
+</div>
