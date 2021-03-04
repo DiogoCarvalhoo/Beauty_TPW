@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Beauty Care</title>
+    {% load static %}
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'css/styles.css'%}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300&family=Montserrat:wght@100&family=Sacramento&display=swap" rel="stylesheet">
+</head>
+<body>
+ <nav class="navbar navbar-expand-lg navbar-light " style="background: whitesmoke;">
+      <!--<a class="navbar-brand" href="#">Home</a>-->
+        <a href="/"><img style="height: 80px; width: 133px; margin-right: 20px" src="/static/images/logo2.png"></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/listaInstitutos" style="width: 133px; height: 80px; padding-top: 30px">Institutos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/listaServicos/" style="width: 133px; height: 80px; padding-top: 30px">Serviços</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/listaProdutos/" style="width: 133px; height: 80px; padding-top: 30px">Produtos</a>
+      </li>
+      {% if user.is_authenticated %}
+        <li class="nav-item">
+            <div class="dropdown show">
+              <a style="width: 133px; height: 80px; padding-top: 30px" class="nav-link" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Gestão
+              </a>
+
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item" href="/gerirInstituto/">Seus Institutos</a>
+                <a class="dropdown-item" href="/gerirProduto/">Seus Produtos</a>
+                <a class="dropdown-item" href="/gerirServico/">Seus Serviços</a>
+                  <a class="dropdown-item" href="/gerirStaff/">Seu Staff</a>
+              </div>
+            </div>
+        </li>
+      {% endif  %}
+      {% if user.username == "projeto" %}
+          <li class="nav-item">
+            <a class="nav-link" href="/areaReservada/" style="width: 150px; height: 80px; padding-top: 30px">Área Reservada</a>
+          </li>
+      {% endif %}
+    </ul>
+    {% if user.is_authenticated %}
+        <ul class="nav navbar-nav navbar-right" >
+            <li style="text-align: right;"><a href="/account">
+                <img src="/static/images/user.png" style="width: 5%">
+                <span class="glyphicon glyphicon-log-in">&nbsp;</span>
+                {{ user.username }}
+                <span class="glyphicon glyphicon-log-in">&nbsp; &nbsp;</span>
+            </a></li>
+            <li style="text-align: right; margin-top: 0.25%"><a href="/logout" >
+                <span class="glyphicon glyphicon-log-in"></span>
+                Logout
+            </a></li>
+        </ul>
+    {% endif %}
+  </div>
+    </nav>
+    {% block content %}
+    {% endblock %}
+ <div style="margin-bottom: 100px;">
+
+    </div>
+    <!-- Footer -->
+    <footer style="margin-top: 50px; position: fixed; width: 100%; bottom: 0px; left: 0px">
+
+      <!-- Copyright -->
+      <div class="footer-copyright text-center py-3 bg-light">© 2020 Copyright: Diogo Carvalho & Rafael Baptista
+        <p>Tecnologias e Programação Web | Universidade de Aveiro</p>
+      </div>
+      <!-- Copyright -->
+
+    </footer>
+    <!-- Footer -->
+</body>
+</html>
+
+

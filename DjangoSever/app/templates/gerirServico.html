@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div style="max-width: 1400px; margin: auto">
+    <br /> <br />
+        <h1>Meus Serviços</h1>
+        <hr>
+        {% if not error %}
+            {% if page_obj %}
+                <br>
+                 {% for servico in page_obj %}
+                    <div class="card-zoom card-deck" style="width: 372.59px; display: inline-block; margin: 30px 20px">
+                      <div class="card" >
+                        <img class="card-img-top" src="/{{ servico.foto }}" alt="Card image cap" style="width: 340.59px; height: 320.59px;" onclick="location.href='/servico/{{ servico.id }}/'">
+                        <div class="card-body" style="width: 340.59px;" onclick="location.href='/servico/{{ servico.id }}/'">
+                          <h5 class="card-title" style="width: 300.59px; height: 30.59px;">{{ servico.nome }}</h5>
+                          <p class="card-text" style="width: 300.59px; height: 120.59px; margin-top: 30px; line-height: 1.2">{{ servico.descricao }}</p>
+                        </div>
+                        <div class="card-footer" style="width: 340.59px;">
+                          <small class="text-muted" style="width: 280.59px; height: 50.59px;">
+                              <img src="/static/images/editicon.png" style="width: 25px; position: absolute; left: 60px;" onclick="location.href='/editarServico/{{ servico.id }}/'">
+                              <span onclick="location.href='/servico/{{ servico.id }}/'">{{ servico.preco }}€</span>
+                             <img src="/static/images/deleteicon.png" style="width: 25px; position: absolute; right: 60px;" onclick="location.href='/deleteServico/{{ servico.id }}/'">
+                          </small>
+                        </div>
+                      </div>
+                    </div>
+                 {% endfor %}
+                    <div class="pagination" style="margin: 15px 0">
+                        <span class="step-links" style="margin: auto">
+                            {% if page_obj.has_previous %}
+                                <a href="?page=1">&laquo; Go To First</a>
+                                &nbsp &nbsp
+                                <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                            {% endif %}
+                            &nbsp &nbsp
+                            <span class="current">
+                                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                            </span>
+                            &nbsp &nbsp
+                            {% if page_obj.has_next %}
+                                <a href="?page={{ page_obj.next_page_number }}">Next</a>
+                                &nbsp &nbsp
+                                <a href="?page={{ page_obj.paginator.num_pages }}">Go To Last &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
+                <br>
+            {% else %}
+                <p>Não possuí serviços ainda!</p>
+            {% endif %}
+            <button type="button" class="btn btn-outline-success" style="width: 200px; margin-top: 40px" onclick="location.href='/inserirServico'">Inserir Servico</button>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends "layout.html" %}
+    {% block content %}
+        <h1 style="margin: 30px 0;"> {{ instituto.nome }}</h1>
+        <hr>
+        <div class="zoom conteudo" style="height: 440px">
+            <img src="/{{ instituto.foto }}" style="float: left; margin-left: 100px;max-width: 800px">
+            <div class="text-item" style="width: 90%; position: relative; left: 100px">
+                <h2 style="padding-top: 20px; margin-bottom: 40px"> {{ instituto.slogan }}</h2>
+                <div style="text-align: left; line-height: 2; font-size: 20px">
+                    <p> Localização: {{ instituto.localizacao }}</p>
+                    <p> Email: {{ instituto.email }}</p>
+                    <p> WebSite: <a href="{{ instituto.website }}">{{ instituto.website }}</a></p>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <h2 style="margin-bottom: 30px">Serviços: </h2>
+        {% if servicos %}
+            <ul style="width: 80%; margin: auto" class="list-group list-group-flush">
+                {% for servico in servicos %}
+                    <li  class="list-group-item" style="margin-bottom: 20px">
+                        <div class="row">
+                            <img style="height: 30px; margin-left: 40px; margin-right: 50px" src="/{{ servico.categoria.foto }}">
+                            <div class="col-md-3 col-xs-6 divTableCell">
+                                <a style="font-size: 16px" href="/servico/{{ servico.id }}/">{{ servico.nome }}</a>
+                            </div>
+                            <div class="col-md-3 col-xs-6 divTableCell">
+                                {{ servico.preco }}€
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Não possuí qualquer Serviço associado.</p>
+        {% endif %}
+        <hr>
+        <h2 style="margin-bottom: 30px">Produtos: </h2>
+        {% if produtos %}
+            <ul style="width: 80%; margin: auto" class="list-group list-group-flush">
+                {% for produto in produtos %}
+                    <li  class="list-group-item" style="margin-bottom: 20px">
+                        <div class="row">
+                            <img style="height: 30px; margin-left: 40px; margin-right: 50px" src="/{{ produto.categoria.foto }}">
+                            <div class="col-md-3 col-xs-6 divTableCell">
+                                <a style="font-size: 16px" href="/produto/{{ produto.id }}/">{{ produto.nome }}</a>
+                            </div>
+                            <div class="col-md-3 col-xs-6 divTableCell">
+                                {{ produto.preco }}€
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Não possuí qualquer Produto associado.</p>
+        {% endif %}
+        <hr>
+        <h2 style="margin-bottom: 30px">Staff:</h2>
+        {% if dict_trabalhadores|length > 0 %}
+            {% for item in dict_trabalhadores.items %}
+                <div class="card-zoom card-deck" style="width: 372.59px; display: inline-block; margin: 30px 20px">
+                  <div class="card">
+                    <img class="card-img-top" src="/{{ item.0.foto }}" alt="Card image cap" style="width: 340.59px; height: 320.59px;">
+                    <div class="card-body" style="width: 340.59px;">
+                      <h5 class="card-title" style="width: 300.59px; height: 30.59px;">{{ item.0.nome }}</h5>
+                    </div>
+                    <div class="card-footer" style="width: 340.59px;">
+                      <small class="text-muted" style="width: 280.59px; height: 50.59px;">
+                          {% for item2 in item.1 %}
+                              {{ item2.posicao }} <br>
+                          {% endfor %}
+                      </small>
+                    </div>
+                  </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Não possuí qualquer Staff associado.</p>
+        {% endif %}
+    {% endblock %}

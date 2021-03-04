@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div style="max-width: 1400px; margin: auto">
+    <br /> <br />
+        <h1>O meu Staff</h1>
+        <hr>
+        {% if not error %}
+            {% if page_obj %}
+                 {% for trabalhador in page_obj %}
+                    <div class="card-zoom card-deck" style="width: 372.59px; display: inline-block; margin: 30px 20px">
+                      <div class="card">
+                        <img class="card-img-top" src="/{{ trabalhador.foto }}" alt="Card image cap" style="width: 340.59px; height: 320.59px;">
+                        <!--<div class="card-body" style="width: 340.59px;">
+                          <h5 class="card-title" style="width: 300.59px; height: 30.59px;">{{ trabalhador.nome }}</h5>
+                        </div>-->
+                        <div class="card-footer" style="width: 340.59px;">
+                          <small class="text-muted" style="width: 280.59px; height: 50.59px; font-size: 16px;">
+                                <img src="/static/images/editicon.png" style="width: 25px; position: absolute; left: 60px;" onclick="location.href='/editarStaff/{{ trabalhador.id }}'">
+                              {{ trabalhador.nome }}
+                                <img src="/static/images/deleteicon.png" style="width: 25px; position: absolute; right: 60px;" onclick="location.href='/deleteStaff/{{ trabalhador.id }}'">
+                          </small>
+                        </div>
+                      </div>
+                    </div>
+                {% endfor %}
+                <div class="pagination" style="margin: 15px 0">
+                        <span class="step-links" style="margin: auto">
+                            {% if page_obj.has_previous %}
+                                <a href="?page=1">&laquo; Go To First</a>
+                                &nbsp &nbsp
+                                <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                            {% endif %}
+                            &nbsp &nbsp
+                            <span class="current">
+                                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                            </span>
+                            &nbsp &nbsp
+                            {% if page_obj.has_next %}
+                                <a href="?page={{ page_obj.next_page_number }}">Next</a>
+                                &nbsp &nbsp
+                                <a href="?page={{ page_obj.paginator.num_pages }}">Go To Last &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
+                <br>
+            {% else %}
+                <p>Não possuí produtos ainda!</p>
+            {% endif %}
+            <button type="button" class="btn btn-outline-success" style="width: 200px; margin-top: 30px" onclick="location.href='/inserirStaff'">Inserir Membro</button>
+        {% endif %}
+    </div>
+{% endblock %}

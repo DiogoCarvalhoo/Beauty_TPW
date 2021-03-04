@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div style="max-width: 1200px; margin: auto">
+    <br /> <br />
+        <h1>Inserir Novo Produto</h1>
+        <hr>
+        {% if erro %}
+            <div class="alert alert-danger" role="alert">
+            Os campos inseridos são inválidos!
+            </div>
+        {% endif %}
+        <form action="/inserirProduto/" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group mb-2" style="display: grid;grid-template-columns: 1fr 4fr;">
+                {{ form.nome.label }}
+                {{ form.nome }}
+            </div>
+            <span>&nbsp; &nbsp;</span>
+            <div class="form-group mb-2" style="display: grid;grid-template-columns: 1fr 4fr;">
+                {{ form.descricao.label }}
+                {{ form.descricao }}
+            </div>
+            <span>&nbsp; &nbsp;</span>
+            <div class="form-group mb-2" style="display: grid;grid-template-columns: 1fr 4fr;" >
+                {{ form.preco.label }}
+                {{ form.preco }}
+            </div>
+            <span>&nbsp; &nbsp;</span>
+            <div class="form-group mb-2" style="display: grid;grid-template-columns: 1fr 4fr;" >
+                {{ form.quantidade.label }}
+                {{ form.quantidade }}
+            </div>
+            <span>&nbsp; &nbsp;</span>
+            <div class="form-group mb-2" style="display: grid;grid-template-columns: 1fr 4fr;">
+                {{ form.categoria.label }}
+                {{ form.categoria }}
+            </div>
+            <span>&nbsp; &nbsp;</span>
+            <div class="form-group mb-2" style="display: grid;grid-template-columns: 1fr 4fr;">
+                {{ form.instituto.label }}
+                {{ form.instituto }}
+            </div>
+            <span>&nbsp; &nbsp;</span>
+            <div class="form-group mb-2" style="display: grid;grid-template-columns: 1fr 4fr;">
+                <label>Foto: </label>
+                {{ form.foto }}
+            </div>
+            <span>&nbsp; &nbsp;</span>
+            <button type="submit" class="btn btn-outline-success" style="width: 200px; margin-top: 40px">Inserir</button>
+        </form>
+    </div>
+{% endblock %}

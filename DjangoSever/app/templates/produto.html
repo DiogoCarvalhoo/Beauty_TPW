@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block content %}
+        <h1 style="margin: 30px 0;"> {{ produto.nome }}</h1>
+        <hr>
+        <div class="zoom conteudo" style="height: 440px">
+            <img src="/{{ produto.foto }}" style="float: left; margin-left: 100px; height: 440px; max-width: 800px">
+            <div class="text-item" style="width: 90%; position: relative; left: 100px">
+                <h2 style="padding-top: 20px; margin-bottom: 40px"> {{ produto.descricao }}</h2>
+                <div style="text-align: left; line-height: 2; font-size: 20px">
+                    <p> Categoria: {{ produto.categoria.nome }}</p>
+                    <p> Preço: {{ produto.preco }}€</p>
+                    <p> Vendedores:
+                        {% for vendedor in institutos %}
+                             <a href="/instituto/{{ vendedor.id }}">{{ vendedor.nome }}</a> <br> &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                        {% endfor %}
+                    </p>
+                    {% if produto.quantidade > 9 %}
+                        <p> Quantidade: {{ produto.quantidade }}ml</p>
+                    {% else %}
+                        <p> Quantidade: {{ produto.quantidade }} items</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <hr>
+    {% endblock %}

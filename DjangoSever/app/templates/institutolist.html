@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div style="max-width: 1200px; margin: auto">
+    <br /> <br />
+        <h1>Institutos</h1>
+        <hr>
+        <form action="." method="post" class="form-inline">
+            {% csrf_token %}
+            <div class="form-group mb-2" style="display: grid;grid-template-columns: 1fr 4fr;">
+                {{ form.nome.label }}
+                {{ form.nome }}
+            </div>
+            <span>&nbsp; &nbsp;</span>
+            <div class="form-group mb-2" style="display: grid;grid-template-columns: 1fr 2.3fr;" >
+                {{ form.localizacao.label }}
+                {{ form.localizacao }}
+            </div>
+            <span>&nbsp; &nbsp;</span>
+            <button type="submit" class="btn btn-outline-secondary" style="margin-bottom: 7px; margin-left: 440px">Search</button>
+        </form>
+        {% if error %}
+            <p>ERROR: Insert a query term.</p>
+        {% endif %}
+        {% if not error %}
+            {% if query != None %}
+                {% if query.nome != "" or query.localizacao != "" %}
+                        <p>Search by:
+                                {% if query.nome != "" %}
+                                  Nome: <strong>{{ query.nome }}</strong>
+                                {% endif %}
+                                {% if query.localizacao != "" %}
+                                  Localização: <strong>{{ query.localizacao }}</strong>
+                                {% endif %}
+                        </p>
+                {% endif %}
+            {% endif %}
+            {% if page_obj %}
+                <br>
+            <p>Found {{ numeroResultados }} institute{{ page_obj|pluralize }}.</p>
+            <ul class="list-group list-group-flush">
+                {% for instituto in page_obj %}
+                    <div class="institutolist-item">
+                        <li  class="list-group-item" style="margin-bottom: 20px">
+                            <img style="height: 100px; float: left; margin-right: 30px; padding-bottom: 20px;" src="/{{ instituto.foto }}" onclick="location.href='/instituto/{{ instituto.id }}/'">
+                            <a style="font-size: 20px" href="/instituto/{{ instituto.id }}/">{{ instituto.nome }}</a>
+                            <ul class="ul-Azul" style="line-height: 180%">
+                            <li>{{ instituto.slogan }}</li>
+                            <li>{{ instituto.localizacao }}</li>
+                            </ul>
+                        </li>
+                    </div>
+                {% endfor %}
+                <div class="pagination" style="margin: 15px 0">
+                    <span class="step-links" style="margin: auto">
+                        {% if page_obj.has_previous %}
+                            <a href="?page=1">&laquo; Go To First</a>
+                            &nbsp &nbsp
+                            <a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                        {% endif %}
+                        &nbsp &nbsp
+                        <span class="current">
+                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                        </span>
+                        &nbsp &nbsp
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}">Next</a>
+                            &nbsp &nbsp
+                            <a href="?page={{ page_obj.paginator.num_pages }}">Go To Last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+            </ul>
+            {% else %}
+                <p>Not found any result.</p>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock %}

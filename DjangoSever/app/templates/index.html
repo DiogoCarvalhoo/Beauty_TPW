@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Beauty Care</title>
+    {% load static %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'css/styles.css'%}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300&family=Montserrat:wght@100&family=Sacramento&display=swap" rel="stylesheet">
+
+    <style>
+        .carousel{
+            background: #2f4357;
+            margin-top: 20px;
+        }
+        .carousel-item{
+            text-align: center;
+            min-height: 280px; /* Prevent carousel from being distorted if for some reason image doesn't load */
+        }
+    </style>
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light " style="background: whitesmoke">
+  <a href="/"><img style="height: 80px; width: 133px; margin-right: 20px" src="/static/images/logo2.png"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="/listaInstitutos" style="width: 133px; height: 80px; padding-top: 30px">Institutos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/listaServicos/" style="width: 133px; height: 80px; padding-top: 30px">Serviços</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/listaProdutos/" style="width: 133px; height: 80px; padding-top: 30px">Produtos</a>
+      </li>
+      {% if user.is_authenticated %}
+        <li class="nav-item">
+            <div class="dropdown show">
+              <a style="width: 133px; height: 80px; padding-top: 30px" class="nav-link" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Gestão
+              </a>
+
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item" href="/gerirInstituto/">Seus Institutos</a>
+                <a class="dropdown-item" href="/gerirProduto/">Seus Produtos</a>
+                <a class="dropdown-item" href="/gerirServico/">Seus Serviços</a>
+                  <a class="dropdown-item" href="/gerirStaff/">Seu Staff</a>
+              </div>
+            </div>
+        </li>
+      {% endif  %}
+      {% if user.username == "projeto" %}
+          <li class="nav-item">
+            <a class="nav-link" href="/areaReservada/" style="width: 150px; height: 80px; padding-top: 30px">Área Reservada</a>
+          </li>
+      {% endif %}
+    </ul>
+    {% if user.is_authenticated %}
+        <ul class="nav navbar-nav navbar-right" >
+            <li style="text-align: right;"><a href="/account">
+                <img src="/static/images/user.png" style="width: 5%">
+                <span class="glyphicon glyphicon-log-in">&nbsp;</span>
+                {{ user.username }}
+                <span class="glyphicon glyphicon-log-in">&nbsp; &nbsp;</span>
+            </a></li>
+            <li style="text-align: right; margin-top: 0.25%"><a href="/logout" >
+                <span class="glyphicon glyphicon-log-in"></span>
+                Logout
+            </a></li>
+        </ul>
+    {% else %}
+        <ul class="nav navbar-nav navbar-right">
+            <li style="margin-right: 25px"><a href="/login">Login</a></li>
+            <li><a href="/register">Criar conta</a></li>
+        </ul>
+    {% endif %}
+
+  </div>
+</nav>
+{% block content %}
+    <div class="container-lg my-3">
+    <div id="myCarousel" class="carousel slide" data-interval="3000" data-ride="carousel" style="width: 90%; margin: 20px auto;">
+        <!-- Carousel indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+        </ol>
+        <!-- Wrapper for carousel items -->
+        <div class="carousel-inner">
+            <div class="zoom carousel-item active">
+                <img src="/static/images/index/services.jpg" alt="First Slide" style="width: 100%; height: 600px" onclick="location.href= '/servico/9'">
+                <div class="text-item carousel-caption d-none d-md-block">
+                    <h5 onclick="location.href= '/servico/15'">Massagem</h5>
+                    <p onclick="location.href= '/servico/15'">Massagem feita em marquesa com óleos, som ambiente à luz das velas para que tu possas desfrutar de um momento de relaxamento só teu.</p>
+                </div>
+            </div>
+            <div class="zoom carousel-item">
+                <img src="/static/images/index/institutes.jpg" alt="Second Slide" style="width: 100%; height: 600px" onclick="location.href= '/instituto/5'">
+                <div class="text-item carousel-caption d-none d-md-block">
+                    <h5 onclick="location.href= '/instituto/5'">Z Vegan Hair</h5>
+                    <p onclick="location.href= '/instituto/5'">Vegan, sem testes em animais, orgânico e livre de parabenos e sulfatos.</p>
+                </div>
+            </div>
+            <div class="zoom carousel-item">
+                <img src="/static/images/index/products.jpg" alt="Third Slide" style="width: 100%; height: 600px" onclick="location.href= '/produto/14'">
+                <div class="text-item carousel-caption d-none d-md-block">
+                    <h5 onclick="location.href= '/produto/22'">Kit Cremes Corporais</h5>
+                    <p onclick="location.href= '/produto/22'">O kit de cremes foi desenvolvido para dar fortalecimento e mais resistência à sua pele. Ideal para pessoas com pele seca.</p>
+                </div>
+            </div>
+        </div>
+        <!-- Carousel controls -->
+        <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </a>
+        <a class="carousel-control-next" href="#myCarousel" data-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </a>
+    </div>
+</div>
+
+       <section>
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-lg-6 order-lg-2">
+              <div class="zoom p-5">
+                <img class="img-fluid rounded-circle" src="/static/images/index/qualidade.jpg" alt="home-page-service" onclick="location.href='/servico/8'" >
+              </div>
+            </div>
+            <div class="col-lg-6 order-lg-1">
+              <div class="p-5">
+                <h2 class="display-4">Qualidade</h2>
+                <p>Venha conhecer as ofertas dos melhores serviços de beleza com que os nossos parceiros estão a brindar os seus clientes ...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+    <section>
+        <div class="container">
+          <div class="row align-items-center">
+            <div class="col-lg-6">
+              <div class="zoom p-5">
+                <img class="img-fluid rounded-circle" src="/static/images/index/quantidade.jpg" alt="home-page-product" onclick="location.href= '/produto/15'">
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="p-5">
+                <h2 class="display-4">Quantidade</h2>
+                <p>... Aproveite e conheça a vasta gama de produtos vendidos pelos nossos parceiros. Prometem-lhe uma melhor qualidade no seu dia-a-dia.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    <div style="margin-bottom: 100px;">
+
+    </div>
+<!-- Footer -->
+    <footer style="margin-top: 50px; position: fixed; width: 100%; bottom: 0px; left: 0px">
+
+      <!-- Copyright -->
+      <div class="footer-copyright text-center py-3" style="background: #e2e6ea;">© 2020 Copyright: Diogo Carvalho & Rafael Baptista
+        <p>Tecnologias e Programação Web | Universidade de Aveiro</p>
+      </div>
+      <!-- Copyright -->
+
+    </footer>
+    <!-- Footer -->
+
+{% endblock %}
+</body>
+</html>

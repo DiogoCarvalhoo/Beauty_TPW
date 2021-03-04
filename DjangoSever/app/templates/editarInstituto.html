@@ -1,0 +1,124 @@
+{% extends "layout.html" %}
+    {% block content %}
+        <div style="max-width: 1600px; margin: auto">
+        <h1>Editar instituto</h1>
+        <hr>
+        {% if erro %}
+            <div class="alert alert-danger" role="alert">
+             Os campos inseridos são inválidos!
+            </div>
+        {% endif %}
+        <form action="." method="post"  enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="row" style="margin:0 30% 0 30% ">
+                <div class="col-sm-2" style="margin-top: auto; margin-bottom: auto; font-size: 22px">
+                    {{ form.nome.label}}
+                </div>
+                <div class="col-sm-10">
+                    {{ form.nome }}
+                </div>
+            </div>
+            <hr>
+            <div class="row" style="height: 440px">
+                <div class="zoom conteudo col-sm-7">
+                    <img src="/{{ instituto.foto }}" >
+                </div>
+                <div class="col-sm-5" style="text-align:left;">
+                        <!--<h2 style="padding-top: 20px; margin-bottom: 40px">{{ instituto.slogan }}</h2>-->
+                    <br><br>
+                        <div class="form-group mb-2" style="display: grid;grid-template-columns: 1fr 4fr;">
+                            <label style="margin-bottom: auto; margin-top: auto; font-size: 18px">Slogan: </label>
+                            {{ form.slogan }}
+                        </div>
+                        <div class="form-group mb-2" style="display: grid;grid-template-columns: 1fr 4fr;">
+                            <label style="margin-bottom: auto; margin-top: auto;font-size: 18px">Localização: </label>
+                            {{ form.localizacao }}
+                        </div>
+                        <div class="form-group mb-2" style="display: grid;grid-template-columns: 1fr 4fr;">
+                            <label style="margin-bottom: auto; margin-top: auto;font-size: 18px">E-mail: </label>
+                            {{ form.email }}
+                        </div>
+                        <div class="form-group mb-2" style="display: grid;grid-template-columns: 1fr 4fr;">
+                            <label style="margin-bottom: auto; margin-top: auto;font-size: 18px">Website: </label>
+                            {{ form.website }}
+                        </div>
+
+                </div>
+                <br><br>
+
+            </div>
+            <div class="row">
+                <div class="col-sm-7">
+                    {{ form.foto }}
+                </div>
+                <div class="col-sm-5">
+                    <button style="width: 150px" class="btn btn-success" type="submit">Guardar</button>
+                </div>
+            </div>
+            <hr>
+
+        </form>
+        <h2 style="margin-bottom: 30px">Serviços: </h2>
+        <ul style="width: 80%; margin: auto" class="list-group list-group-flush">
+            {% for servico in servicos %}
+                <li  class="list-group-item" style="margin-bottom: 20px">
+                    <div class="row">
+                        <img style="height: 30px; margin-left: 40px; margin-right: 50px" src="/{{ servico.categoria.foto }}">
+                        <div class="col-md-3 col-xs-6 divTableCell">
+                            <a style="font-size: 16px" href="/servico/{{ servico.id }}/">{{ servico.nome }}</a>
+                        </div>
+                        <div class="col-md-3 col-xs-6 divTableCell">
+                            {{ servico.preco }}€
+                        </div>
+                        <img src="/static/images/editicon.png" style="width: 25px; position: absolute; right: 70px;" onclick="location.href='/editarServico/{{ servico.id }}/'">
+                        <img src="/static/images/deleteicon.png" style="width: 25px; margin-left: 30px; position: absolute; right: 30px;" onclick="location.href='/deleteServico/{{ servico.id }}/'">
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        <hr>
+        <h2 style="margin-bottom: 30px">Produtos: </h2>
+        <ul style="width: 80%; margin: auto" class="list-group list-group-flush">
+            {% for produto in produtos %}
+                <li  class="list-group-item" style="margin-bottom: 20px">
+                    <div class="row">
+                        <img style="height: 30px; margin-left: 40px; margin-right: 50px" src="/{{ produto.categoria.foto }}">
+                        <div class="col-md-3 col-xs-6 divTableCell">
+                            <a style="font-size: 16px" href="/produto/{{ produto.id }}/">{{ produto.nome }}</a>
+                        </div>
+                        <div class="col-md-3 col-xs-6 divTableCell">
+                            {{ produto.preco }}€
+                        </div>
+                        <img src="/static/images/editicon.png" style="width: 25px; position: absolute; right: 70px;" onclick="location.href='/editarProduto/{{ produto.id }}/'">
+                        <img src="/static/images/deleteicon.png" style="width: 25px; margin-left: 30px; position: absolute; right: 30px; " onclick="location.href='/deleteProduto/{{ produto.id }}/'">
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        <hr>
+        <h2 style="margin-bottom: 30px">Staff:</h2>
+        {% if dict_trabalhadores|length > 1 %}
+            {% for item in dict_trabalhadores.items %}
+                <div class="card-zoom card-deck" style="width: 372.59px; display: inline-block; margin: 30px 20px">
+                  <div class="card">
+                    <img class="card-img-top" src="/{{ item.0.foto }}" alt="Card image cap" style="width: 340.59px; height: 320.59px;">
+                    <div class="card-body" style="width: 340.59px;">
+                      <h5 class="card-title" style="width: 300.59px; height: 30.59px;">{{ item.0.nome }}</h5>
+                    </div>
+                    <div class="card-footer" style="width: 340.59px;">
+                      <small class="text-muted" style="width: 280.59px; height: 50.59px;">
+                          <img src="/static/images/editicon.png" style="width: 25px; position: absolute; left: 60px;">
+                          {% for item2 in item.1 %}
+                            {{ item2.posicao }} <br>
+                          {% endfor %}
+                          <img src="/static/images/deleteicon.png" style="width: 25px; position: absolute; right: 60px; top: 416px">
+                      </small>
+                    </div>
+                  </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Não possuí qualquer Staff associado.</p>
+        {% endif %}
+        </div>
+    {% endblock %}

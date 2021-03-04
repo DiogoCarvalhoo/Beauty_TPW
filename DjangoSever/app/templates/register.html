@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="text-center" style="margin:0px 600px 0px 600px">
+        <form action="." method="post" class="form-signin">
+            {% csrf_token %}
+            <br>
+          <h2>Criar conta</h2>
+            <br>
+            <label for="modalLRInput13">Username</label>
+          {{ form.username }}
+            <label for="modalLRInput12">Email</label>
+          {{ form.email }}
+            <label for="modalLRInput14">Password</label>
+          {{ form.password1 }}
+            <label for="modalLRInput15">Confirmar Password</label>
+          {{ form.password2 }}
+            <br>
+          <!--<input type="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>-->
+          <!--<input type="password" id="inputPassword" class="form-control" placeholder="Palavra-Passe" required> -->
+          <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+        </form>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                Já tem uma conta ? <a class="ml-2" href="{% url 'login' %}">Login</a>
+            </small>
+        </div>
+    </div>
+
+{% endblock content %}
