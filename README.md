@@ -5,7 +5,6 @@
 ### Autores:
 
 Diogo Carvalho <br/>
-Ricardo Cruz <br/>
 Rafael Baptista 
 
 ====
