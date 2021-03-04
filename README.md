@@ -11,6 +11,6 @@ Rafael Baptista
 ====
 
 Universidade de Aveiro<br/>
-Interação Humano-Computador
+Tecnologias Programação Web
 
 ====
